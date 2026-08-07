@@ -2,10 +2,10 @@
   <section class="nomads-showcase-section">
     <div class="showcase-header">
       <div class="header-left">
-        <h2 class="showcase-title">实战案例与爆款模板库 (Nomads Showcase)</h2>
-        <p class="showcase-subtitle">精选高赞节日祝福与商业文案场景，点击“一键套用”快速生成专业文案</p>
+        <h2 class="showcase-title">实战案例与模板库 (Nomads Showcase)</h2>
+        <p class="showcase-subtitle">精选高频实战场景，点击“一键套用”快速生成高质量结果</p>
       </div>
-      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个节日策划模板</span>
+      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个实战模板</span>
     </div>
 
     <div class="showcase-grid">
@@ -41,95 +41,119 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+const props = defineProps<{
+  appTitle?: string;
+  isImage?: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'apply-template', payload: { prompt: string; style?: string }): void;
+}>();
+
 export interface ShowcaseItem {
   id: string;
   tag: string;
   title: string;
   prompt: string;
-  festivalType?: string;
-  recipientGroup?: string;
-  textStyle?: string;
+  style?: string;
   usageCount: string;
 }
 
-const emit = defineEmits<{
-  (e: 'apply-template', payload: {
-    prompt: string;
-    festivalType?: string;
-    recipientGroup?: string;
-    textStyle?: string;
-  }): void;
-}>();
-
-const showcaseItems = computed<ShowcaseItem[]>(() => [
-  {
-    id: 'jieri-1',
-    tag: '新春佳节',
-    title: '新春佳节拜年短信与亲友贺词',
-    prompt: '新春佳节拜年贺词，致亲朋好友，希望语气温馨治愈，包含对过去一年的感恩与对新年阖家幸福、身体健康的美好祝愿。',
-    festivalType: '传统节日 (新春/中秋/端午/清明) 祝福',
-    recipientGroup: '亲朋好友',
-    textStyle: '温馨深情治愈',
-    usageCount: '48.2k'
-  },
-  {
-    id: 'jieri-2',
-    tag: '中秋佳节',
-    title: '中秋佳节客户高端致谢贺辞',
-    prompt: '中秋佳节致战略合作伙伴与高端客户，表达对长期合作信任的诚挚感谢，预祝花好月圆、事业蒸蒸日上。',
-    festivalType: '传统节日 (新春/中秋/端午/清明) 祝福',
-    recipientGroup: '客户 partner',
-    textStyle: '大气商务尊贵',
-    usageCount: '35.6k'
-  },
-  {
-    id: 'jieri-3',
-    tag: '教师节',
-    title: '教师节尊师重道感恩诗意致词',
-    prompt: '教师节致恩师，表达桃李不言下自成蹊的崇高敬意，诗意典雅，提炼师恩难忘的深厚情感。',
-    festivalType: '专属感恩节 (教师节/母亲节/父亲节) 致敬',
-    recipientGroup: '亲朋好友',
-    textStyle: '典雅古风诗意',
-    usageCount: '29.4k'
-  },
-  {
-    id: 'jieri-4',
-    tag: '元旦跨年',
-    title: '朋友圈迎新年跨年高赞金句',
-    prompt: '元旦跨年倒计时朋友圈文案，面向年轻群体，语气幽默俏皮，告别旧岁的烦恼，拥抱新一年的幸运与美好。',
-    festivalType: '西方与现代节日 (圣诞/元旦/情人节) 祝福',
-    recipientGroup: '亲朋好友',
-    textStyle: '幽默俏皮青春',
-    usageCount: '52.1k'
-  },
-  {
-    id: 'jieri-5',
-    tag: '母亲节',
-    title: '母亲节致长辈温情感悟文案',
-    prompt: '母亲节致母亲，表达对岁月沉淀与无私母爱的深情致敬，配图建议温馨自然，充满治愈力量。',
-    festivalType: '专属感恩节 (教师节/母亲节/父亲节) 致敬',
-    recipientGroup: '长辈父母',
-    textStyle: '温馨深情治愈',
-    usageCount: '31.8k'
-  },
-  {
-    id: 'jieri-6',
-    tag: '国庆商业大促',
-    title: '国庆黄金周品牌促销与海报文案',
-    prompt: '国庆黄金周品牌大促，面向广大消费者与客户，设计极具冲击力的海报主副标题、活动促单口号与朋友圈宣发短句。',
-    festivalType: '商业节点节日文案与朋友圈海报',
-    recipientGroup: '客户 partner',
-    textStyle: '大气商务尊贵',
-    usageCount: '27.3k'
+// 模拟实战案例数据库（支持根据文本/图像类及应用主题切换）
+const showcaseItems = computed<ShowcaseItem[]>(() => {
+  if (props.isImage) {
+    return [
+      {
+        id: 'img-1',
+        tag: '写真肖像',
+        title: '商务精英形象照',
+        prompt: '高端写字楼背景，身穿深蓝色西装，眼神自信专注，赛博朋克光影效果',
+        style: '<photography>',
+        usageCount: '18.5k'
+      },
+      {
+        id: 'img-2',
+        tag: '概念插画',
+        title: '未来科幻城市海报',
+        prompt: '霓虹灯光的赛博朋克立体城市，飞行汽车，高品质概念插画，8k分辨率',
+        style: '<illustration>',
+        usageCount: '24.1k'
+      },
+      {
+        id: 'img-3',
+        tag: '二次元动漫',
+        title: '日系国潮动漫角色',
+        prompt: '穿着现代汉服的国风少年，手持纸伞，水彩漫感，唯美光感与柔光滤镜',
+        style: '<anime>',
+        usageCount: '15.9k'
+      },
+      {
+        id: 'img-4',
+        tag: '水彩艺术',
+        title: '治愈系自然风景画',
+        prompt: '晨雾中的森林湖泊，阳光穿透树林，水彩渐变质感，温馨治愈风格',
+        style: '<watercolor>',
+        usageCount: '12.3k'
+      }
+    ];
+  } else {
+    return [
+      {
+        id: 'text-1',
+        tag: '职场总结',
+        title: '周报 OKR 成果提炼',
+        prompt: '本周完成了核心模块优化与线上异常排查，请帮我梳理为具备量化指标的 OKR 汇报文案',
+        style: '专业干练，结果导向',
+        usageCount: '32.8k'
+      },
+      {
+        id: 'text-2',
+        tag: '高情商沟通',
+        title: '拒绝不合理加班话术',
+        prompt: '领导在周末突然布置非紧急任务，如何高情商、委婉且有理有据地推迟到工作日处理？',
+        style: '高情商，委婉，有情调',
+        usageCount: '28.4k'
+      },
+      {
+        id: 'text-3',
+        tag: '短视频文案',
+        title: '知识干货吸睛开头',
+        prompt: '准备制作一条关于高效学习法的短视频，设计 3 个能在前 3 秒留住用户的爆款口播开头',
+        style: '专业干练，结果导向',
+        usageCount: '45.1k'
+      },
+      {
+        id: 'text-4',
+        tag: '商务公文',
+        title: '跨部门协同申请函',
+        prompt: '因项目上线需要研发部门配合联调，撰写一份正式、严谨且明确时间节点的协同申请书',
+        style: '专业干练，结果导向',
+        usageCount: '19.7k'
+      },
+      {
+        id: 'text-5',
+        tag: '小红书种草',
+        title: '实战干货笔记排版',
+        prompt: '分享 5 个提升日常工作效率的文字工具，语言亲切，搭配吸引人的标题与 Emoji 排版',
+        style: '高情商，委婉，有情调',
+        usageCount: '36.2k'
+      },
+      {
+        id: 'text-6',
+        tag: '学术润色',
+        title: '论文摘要与结论重构',
+        prompt: '将以下粗糙的研究结论重写为学术规范、逻辑严密且无语法语病的论文摘要总结',
+        style: '专业干练，结果导向',
+        usageCount: '22.0k'
+      }
+    ];
   }
-]);
+});
 
 function applyTemplate(item: ShowcaseItem) {
   emit('apply-template', {
     prompt: item.prompt,
-    festivalType: item.festivalType,
-    recipientGroup: item.recipientGroup,
-    textStyle: item.textStyle
+    style: item.style
   });
 }
 </script>
@@ -293,4 +317,3 @@ function applyTemplate(item: ShowcaseItem) {
   transform: translateX(3px);
 }
 </style>
-
